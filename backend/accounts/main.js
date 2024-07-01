@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const bcrypt = require("bcrypt");
 const {Account , Profile} = require("./schema.js");
 
 dotenv.config();
@@ -55,8 +56,20 @@ app.post("/signup" , (req , res)=>{
         if(!account.password){
             return res.status(400).send("Password is required");
         }
-        account.save();
+        else{
+            bcrypt.hash(account.password , 10 , (err , hash)=>{
+                if(err){
+                    return res.status(500).send("Error hashing password");
+                }
+                account.password = hash;
+                account.save();
+                res.sendStatus(201);
+            });
+        }
     }
+});
+
+app.post("/login" , (req , res)=>{
 });
 
 app.listen(process.env.PORT, ()=>{
