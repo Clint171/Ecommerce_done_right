@@ -4,16 +4,22 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const connection = mongoose.connect(process.env.MONGO_URL,{
+mongoose.connect(process.env.MONGO_URL,{
     dbName : "dkut_buy_sell_accounts"
 });
 
-connection.once("connect", ()=>{
+const db = mongoose.connection;
+
+db.once("open", ()=>{
     console.log("Mongodb connected successfully");
 });
 
-connection.on("error" , ()=>{
+db.on("error" , ()=>{
     console.log("Error connecting to Mongodb");
+});
+
+db.on("disconnected" , ()=>{
+    console.log("Mongodb disconnected");
 });
 
 const app = express();
