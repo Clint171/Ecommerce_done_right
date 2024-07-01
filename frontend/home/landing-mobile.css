@@ -76,6 +76,7 @@ iconify-icon{
     justify-content: center;
     align-items: center;
     gap: 1em;
+    margin-bottom: 5em;
 }
 
 .product{
@@ -99,4 +100,15 @@ iconify-icon{
     background-color: rgb(138, 95, 2);
     color: white;
     font-size: large;
+}
+
+.product-buy{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+
+.product-buy span{
+    background-color: black;
+    width: fit-content;
 }
