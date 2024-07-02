@@ -69,8 +69,32 @@ app.post("/signup" , (req , res)=>{
     }
 });
 
-app.post("/login" , (req , res)=>{
+app.post("/login" , async (req , res)=>{
+    let account = await Account.findOne({email : req.body.email});
+    if(!account){
+        return res.status(404).send("Account not found");
+    }
+    if(account.type == "google"){
+        return res.status(400).send("Use google login");
+    }
+    bcrypt.compare(req.body.password , account.password , (err , same)=>{
+        if(err){
+            return res.status(500).send("Error comparing passwords");
+        }
+        if(!same){
+            return res.status(401).send("Incorrect password");
+        }
+        res.send("Login successful");
+    });
 });
+
+app.post("/verify" , async (req , res)=>{
+    //implement email verification
+});
+
+app.post("/profile" , async (req , res)=>{
+    //implement profile after token verification
+})
 
 app.listen(process.env.PORT, ()=>{
     console.log(`Accounts on port: ${process.env.PORT}`);
